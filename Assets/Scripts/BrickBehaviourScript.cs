@@ -49,21 +49,16 @@ public class BrickBehaviourScript : MonoBehaviour {
             }
             else
             {
-                Transform[] childTransforms = GetComponentsInChildren<Transform>(true);
-                GameObject childGameObject;
-                foreach (Transform t in childTransforms)
-                {
-                    childGameObject = t.gameObject;
-
-                    if (t.name == "BreakArtwork")
-                    {
-                        t.GetComponent<SpriteRenderer>().sprite = breakSprites[breakLevel];
-                        break;
-                    }
-                }
+                setBreakLevel();
             }
         }
 
         return retScore;
+    }
+
+    public void setBreakLevel()
+    {
+        GameObject childGameObject = transform.Find("BreakArtwork").gameObject;
+        childGameObject.GetComponent<SpriteRenderer>().sprite = breakSprites[breakLevel];
     }
 }

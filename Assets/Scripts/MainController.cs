@@ -18,7 +18,7 @@ public class MainController : MonoBehaviour {
     public int score = 0;
     public bool doingSetup = true;
     public int numDestroyableBricks;
-    public static int MAX_NUM_LEVELS = 1;
+    public static int MAX_NUM_LEVELS = 2;
 
     private GameObject levelImage;
     private Text levelText;
@@ -37,15 +37,24 @@ public class MainController : MonoBehaviour {
     private void loadLevel()
     {
         doingSetup = true;
-        levelImage = GameObject.Find("LevelImage");
-        levelText = GameObject.Find("LevelText").GetComponent<Text>();
-        scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
-        lifeText = GameObject.Find("LifeText").GetComponent<Text>();
+
+        if (levelImage == null)
+            levelImage = GameObject.Find("LevelImage");
+
+        levelImage.SetActive(true);
+
+        if (levelText == null)
+            levelText = GameObject.Find("LevelText").GetComponent<Text>();
+
+        if (scoreText == null)
+            scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
+
+        if (lifeText == null)
+            lifeText = GameObject.Find("LifeText").GetComponent<Text>();
+
         numDestroyableBricks = 0;
 
         levelText.text = "Level " + level;
-
-        levelImage.SetActive(true);
 
         Invoke("deactivateLevelImage", levelStartDelay);
 
@@ -90,21 +99,43 @@ public class MainController : MonoBehaviour {
 
                     switch (curBrick)
                     {
-                        case "1":           //brown brick
+                        case "1":           //broken brown brick
                             sr.sprite = brownBrick;
                             bbs.brickType = BrickBehaviourScript.BrickType.BROWN_BRICK;
+                            bbs.breakLevel = 2;
                             numDestroyableBricks++;
                             break;
-                        case "2":           //red brick
+                        case "2":           //full brown brick
+                            sr.sprite = brownBrick;
+                            bbs.brickType = BrickBehaviourScript.BrickType.BROWN_BRICK;
+                            bbs.breakLevel = 0;
+                            numDestroyableBricks++;
+                            break;
+                        case "3":           //broken red brick
                             sr.sprite = redBrick;
+                            bbs.breakLevel = 2;
                             bbs.brickType = BrickBehaviourScript.BrickType.RED_BRICK;
                             numDestroyableBricks++;
                             break;
-                        case "3":           //grey brick
+                        case "4":           //less broken red brick
+                            sr.sprite = redBrick;
+                            bbs.breakLevel = 1;
+                            bbs.brickType = BrickBehaviourScript.BrickType.RED_BRICK;
+                            numDestroyableBricks++;
+                            break;
+                        case "5":           //full broken red brick
+                            sr.sprite = redBrick;
+                            bbs.breakLevel = 0;
+                            bbs.brickType = BrickBehaviourScript.BrickType.RED_BRICK;
+                            numDestroyableBricks++;
+                            break;
+                        case "6":           //broken red brick
                             sr.sprite = greyBrick;
+                            bbs.breakLevel = 0;
                             bbs.brickType = BrickBehaviourScript.BrickType.GREY_BRICK;
                             break;
                     }
+                    bbs.setBreakLevel();
                 }
                 curX += width;
             }
@@ -136,7 +167,7 @@ public class MainController : MonoBehaviour {
             {
                 resetLife();
                 level++;
-                if (level >= MAX_NUM_LEVELS)
+                if (level > MAX_NUM_LEVELS)
                     resetGame("You reached Max Levels " + MAX_NUM_LEVELS + " resetting to level 1");
                 else
                     loadLevel();

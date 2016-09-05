@@ -57,7 +57,7 @@ public class ArrowControlScript : MonoBehaviour {
                     if (zRot > 360f)
                         zRot = zRot - 360f;
                     else if (zRot < 0f)
-                        zRot = 360f - zRot;
+                        zRot = 360f + zRot;
                 }
             }
 
