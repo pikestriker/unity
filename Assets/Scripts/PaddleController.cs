@@ -18,8 +18,9 @@ public class PaddleController : MonoBehaviour {
 
     void FixedUpdate()
     {
+        MainController mainController = FindObjectOfType<MainController>();
         bool startLife = FindObjectOfType<MainController>().startLife; ;
-        if (!startLife)
+        if (!startLife && !mainController.doingSetup)
         {
             if (Input.GetKey("right") && !Input.GetKey("left"))
                 setVelocity(true);
@@ -105,5 +106,9 @@ public class PaddleController : MonoBehaviour {
     public void resetPaddle()
     {
         this.GetComponent<Transform>().position = new Vector2(0.0f, this.GetComponent<Transform>().position.y);
+
+        Rigidbody2D paddleRigidBody = GetComponent<Rigidbody2D>();
+        if (paddleRigidBody.velocity.x != 0.0f)
+            paddleRigidBody.velocity = new Vector2(0.0f, 0.0f);
     }
 }

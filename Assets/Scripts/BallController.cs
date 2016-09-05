@@ -30,7 +30,8 @@ public class BallController : MonoBehaviour {
     //}
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.tag == "Brick")
+        MainController mainController = FindObjectOfType<MainController>();
+        if (!mainController.startLife && !mainController.doingSetup && col.gameObject.tag == "Brick")
         {
             print("Hit a brick");
             int retScore = col.gameObject.GetComponent<BrickBehaviourScript>().brickHit();
@@ -45,8 +46,9 @@ public class BallController : MonoBehaviour {
 
     void FixedUpdate()
     {
+        MainController mainController = FindObjectOfType<MainController>();
         bool startLife = FindObjectOfType<MainController>().startLife;
-        if (!startLife)
+        if (!startLife && !mainController.doingSetup)
         {
             Rigidbody2D spriteRigidbody = GetComponent<Rigidbody2D>();
             float curVel = spriteRigidbody.velocity.magnitude;

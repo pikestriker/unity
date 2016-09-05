@@ -4,6 +4,7 @@ using System.Collections;
 public class ArrowControlScript : MonoBehaviour {
 
     public float rotationSpeed = 1.0f;
+    private float zRot = 0f;
 
 	// Use this for initialization
 	void Start () {
@@ -12,8 +13,9 @@ public class ArrowControlScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        MainController mainController = FindObjectOfType<MainController>();
         bool startLife = FindObjectOfType<MainController>().startLife;
-        if (startLife)
+        if (startLife && !mainController.doingSetup)
         {
             BallController ballScript = FindObjectOfType<BallController>();
 
@@ -45,12 +47,17 @@ public class ArrowControlScript : MonoBehaviour {
                 // if the arrow is within the 0 - 80 or the 290 to 360 range or
                 // if the arrow is out of that range and the opposite direction is pressed it
                 // can still rotate
-                if ((objTrans.eulerAngles.z >= 0 && objTrans.eulerAngles.z <= 80) ||
-                    (objTrans.eulerAngles.z >= 290 && objTrans.eulerAngles.z <= 360) ||
-                    (objTrans.eulerAngles.z <= 290 && objTrans.eulerAngles.z >= 270 && !right) ||
-                    (objTrans.eulerAngles.z >= 80 && objTrans.eulerAngles.z <= 100 && right))
+                if ((zRot >= 0f && zRot <= 80f) ||
+                    (zRot >= 290f && zRot <= 360f) ||
+                    (zRot <= 290f && zRot >= 270f && !right) ||
+                    (zRot >= 80f && zRot <= 100f && right))
                 {
                     objTrans.Rotate(new Vector3(0.0f, 0.0f, 1.0f), rotAmount);
+                    zRot += rotAmount;
+                    if (zRot > 360f)
+                        zRot = zRot - 360f;
+                    else if (zRot < 0f)
+                        zRot = 360f - zRot;
                 }
             }
 
@@ -60,8 +67,11 @@ public class ArrowControlScript : MonoBehaviour {
 
     public void resetArrow()
     {
+        zRot = 0f;
         this.gameObject.SetActive(true);
-        this.gameObject.transform.Rotate(new Vector3(0.0f, 0.0f, 1.0f), 0.0f);
+        this.gameObject.transform.rotation = Quaternion.identity;
+        BallController ballScript = FindObjectOfType<BallController>();
+        ballScript.setPosToEndOfArror(this.gameObject);
     }
     
 }

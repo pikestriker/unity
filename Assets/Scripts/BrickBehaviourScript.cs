@@ -21,9 +21,7 @@ public class BrickBehaviourScript : MonoBehaviour {
 
     public int brickHit()
     {
-        //TODO:
-        // - Need to destroy the bricks after their destroy level has been exceeded
-        // - Need to "load" a level and create the game objects based on a template object
+        MainController mainController = FindObjectOfType<MainController>();
         int retScore = 0;
         int oldBreakLevel = breakLevel;
         switch(brickType)
@@ -45,6 +43,7 @@ public class BrickBehaviourScript : MonoBehaviour {
         {
             if (breakLevel > destroyLevel)
             {
+                mainController.numDestroyableBricks--;
                 Destroy(this.gameObject);
                 print("Destroy the brick");
             }
