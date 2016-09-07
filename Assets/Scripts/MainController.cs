@@ -206,6 +206,7 @@ public class MainController : MonoBehaviour {
                 if (numLife < 0)
                 {
                     numLife = 3;
+                    score = 0;
                     resetGame("You suck!  Game Over");
                     // this would be called to transition the scene to the game over screen and start at level 1 again?
                 }

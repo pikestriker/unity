@@ -62,6 +62,7 @@ public class BallController : MonoBehaviour {
             previouslyPaused = true;
             Rigidbody2D paddleRigidbody = GetComponent<Rigidbody2D>();
             previousVelocity = paddleRigidbody.velocity;
+            paddleRigidbody.velocity = new Vector2(0f, 0f);
         }
 
         if (!startLife && !mainController.doingSetup && !mainController.paused)
