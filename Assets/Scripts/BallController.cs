@@ -11,9 +11,11 @@ public class BallController : MonoBehaviour {
     public float minVel = 3.0f;
     private float sinValue;
     private float cosValue;
+    private bool previouslyPaused = false;
+    private Vector2 previousVelocity;
 
-	// Use this for initialization blah blah blah
-	void Start () {
+    // Use this for initialization blah blah blah
+    void Start () {
         //print("Start BallController");
         //setVelocity(xVel, yVel);
     }
@@ -31,7 +33,7 @@ public class BallController : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D col)
     {
         MainController mainController = FindObjectOfType<MainController>();
-        if (!mainController.startLife && !mainController.doingSetup && col.gameObject.tag == "Brick")
+        if (!mainController.startLife && !mainController.doingSetup && !mainController.paused && col.gameObject.tag == "Brick")
         {
             print("Hit a brick");
             int retScore = col.gameObject.GetComponent<BrickBehaviourScript>().brickHit();
@@ -48,7 +50,21 @@ public class BallController : MonoBehaviour {
     {
         MainController mainController = FindObjectOfType<MainController>();
         bool startLife = FindObjectOfType<MainController>().startLife;
-        if (!startLife && !mainController.doingSetup)
+
+        if (!mainController.paused && previouslyPaused)
+        {
+            previouslyPaused = false;
+            Rigidbody2D paddleRigidBody = GetComponent<Rigidbody2D>();
+            paddleRigidBody.velocity = previousVelocity;
+        }
+        else if (mainController.paused && !previouslyPaused)
+        {
+            previouslyPaused = true;
+            Rigidbody2D paddleRigidbody = GetComponent<Rigidbody2D>();
+            previousVelocity = paddleRigidbody.velocity;
+        }
+
+        if (!startLife && !mainController.doingSetup && !mainController.paused)
         {
             Rigidbody2D spriteRigidbody = GetComponent<Rigidbody2D>();
             float curVel = spriteRigidbody.velocity.magnitude;

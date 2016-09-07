@@ -1,7 +1,8 @@
- - Need to fix the problem where the ball will "stick" to the wall.  This happens on the right side and the top
- - Add more levels
- - Add the animation to the ends of the paddles
+ - Need to fix the problem where the ball will "stick" to the wall.  This happens on all the sides
+ - Add more levels - have two so far
+ - Add the animation to the ends of the paddles - done
  - Add a new font (bubble letters)
  - Add more brick levels - done
  - Add random power ups to fall after bricks break
- - Add GUI and pause functionality
+ - Add GUI and pause functionality - added a pause functionality, now want to add menu to that
+ - Perhaps add a duck flying across the stage

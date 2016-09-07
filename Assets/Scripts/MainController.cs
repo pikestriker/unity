@@ -18,11 +18,15 @@ public class MainController : MonoBehaviour {
     public int score = 0;
     public bool doingSetup = true;
     public int numDestroyableBricks;
+    public bool paused = false;
     public static int MAX_NUM_LEVELS = 2;
 
     private GameObject levelImage;
     private Text levelText;
     private float levelStartDelay = 2f;
+    private float pauseButtonDelay = 0.5f;
+    private bool pauseDelay = false;
+    private string pauseButton = "p";
 
     private Text scoreText;
     private Text lifeText;
@@ -158,7 +162,29 @@ public class MainController : MonoBehaviour {
 
     public void FixedUpdate()
     {
-        if (!startLife && !doingSetup)
+        if (Input.GetKey(pauseButton.ToLower()) && !pauseDelay)
+        {
+            paused = !paused;
+            pauseDelay = true;
+            Invoke("setPauseDelayToFalse", pauseButtonDelay);
+            // set the paused text on the screen
+        }
+
+        //if (!startLife)
+        //    print("startLife is false");
+        //else
+        //    print("startLife is true");
+
+        //if (!doingSetup)
+        //    print("doingSetup is false");
+        //else
+        //    print("doingSetup is true");
+
+        //if (!paused)
+        //    print("paused is false");
+        //else
+        //    print("paused is true");
+        if (!startLife && !doingSetup && !paused)
         {
             scoreText.text = "Score:  " + score;
             BallController ballScript = FindObjectOfType<BallController>();
@@ -186,6 +212,11 @@ public class MainController : MonoBehaviour {
                 lifeText.text = "Lives:  " + numLife;
             }
         }
+    }
+
+    private void setPauseDelayToFalse()
+    {
+        pauseDelay = false;
     }
 
     private void resetGame(string textToDisplay)

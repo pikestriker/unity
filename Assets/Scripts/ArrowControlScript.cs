@@ -15,7 +15,7 @@ public class ArrowControlScript : MonoBehaviour {
 
         MainController mainController = FindObjectOfType<MainController>();
         bool startLife = FindObjectOfType<MainController>().startLife;
-        if (startLife && !mainController.doingSetup)
+        if (startLife && !mainController.doingSetup && !mainController.paused)
         {
             BallController ballScript = FindObjectOfType<BallController>();
 

@@ -6,6 +6,9 @@ public class PaddleController : MonoBehaviour {
     public float velocity = 2.0f;
     public GameObject rightWall;
     public GameObject leftWall;
+
+    private bool previouslyPaused = false;
+    private Vector2 previousVelocity;
 	// Use this for initialization
 	void Start () {
 	
@@ -20,7 +23,20 @@ public class PaddleController : MonoBehaviour {
     {
         MainController mainController = FindObjectOfType<MainController>();
         bool startLife = FindObjectOfType<MainController>().startLife; ;
-        if (!startLife && !mainController.doingSetup)
+
+        if (!mainController.paused && previouslyPaused)
+        {
+            previouslyPaused = false;
+            Rigidbody2D paddleRigidBody = GetComponent<Rigidbody2D>();
+            paddleRigidBody.velocity = previousVelocity;
+        }
+        else if (mainController.paused && !previouslyPaused)
+        {
+            previouslyPaused = true;
+            Rigidbody2D paddleRigidbody = GetComponent<Rigidbody2D>();
+            previousVelocity = paddleRigidbody.velocity;
+        }
+        if (!startLife && !mainController.doingSetup && !mainController.paused)
         {
             if (Input.GetKey("right") && !Input.GetKey("left"))
                 setVelocity(true);
