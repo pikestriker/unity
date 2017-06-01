@@ -12,14 +12,14 @@ public class MainController : MonoBehaviour {
     public Sprite redBrick;
     public Sprite brownBrick;
     public Sprite greyBrick;
-    public int level = 1;
+    public int level = 5;
     public bool startLife = true;
     public int numLife = 3;
     public int score = 0;
     public bool doingSetup = true;
     public int numDestroyableBricks;
     public bool paused = false;
-    public static int MAX_NUM_LEVELS = 2;
+    public static int MAX_NUM_LEVELS = 5;
 
     private GameObject levelImage;
     private Text levelText;
@@ -133,7 +133,7 @@ public class MainController : MonoBehaviour {
                             bbs.brickType = BrickBehaviourScript.BrickType.RED_BRICK;
                             numDestroyableBricks++;
                             break;
-                        case "6":           //broken red brick
+                        case "6":           //grey brick
                             sr.sprite = greyBrick;
                             bbs.breakLevel = 0;
                             bbs.brickType = BrickBehaviourScript.BrickType.GREY_BRICK;
